@@ -15,7 +15,6 @@
 		A1BA76A72234493700806C32 /* ScopeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76A62234493700806C32 /* ScopeItem.swift */; };
 		A1BA76AB22344B7500806C32 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76AA22344B7500806C32 /* Body.swift */; };
 		A1BA76AD22344BB300806C32 /* CommitConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76AC22344BB300806C32 /* CommitConfig.swift */; };
-		A1BA76B02234505A00806C32 /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76AF2234505A00806C32 /* HelpCommand.swift */; };
 		A1BA76B22234507300806C32 /* BaseCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76B12234507300806C32 /* BaseCommand.swift */; };
 		A1BA76B4223450E300806C32 /* MakeConfigCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76B3223450E300806C32 /* MakeConfigCommand.swift */; };
 		A1BA76B62234535900806C32 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76B52234535900806C32 /* Constants.swift */; };
@@ -45,7 +44,6 @@
 		A1BA76A62234493700806C32 /* ScopeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeItem.swift; sourceTree = "<group>"; };
 		A1BA76AA22344B7500806C32 /* Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		A1BA76AC22344BB300806C32 /* CommitConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitConfig.swift; sourceTree = "<group>"; };
-		A1BA76AF2234505A00806C32 /* HelpCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommand.swift; sourceTree = "<group>"; };
 		A1BA76B12234507300806C32 /* BaseCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCommand.swift; sourceTree = "<group>"; };
 		A1BA76B3223450E300806C32 /* MakeConfigCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeConfigCommand.swift; sourceTree = "<group>"; };
 		A1BA76B52234535900806C32 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -125,7 +123,6 @@
 		A1BA76AE2234501E00806C32 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
-				A1BA76AF2234505A00806C32 /* HelpCommand.swift */,
 				A1BA76B12234507300806C32 /* BaseCommand.swift */,
 				A1BA76B3223450E300806C32 /* MakeConfigCommand.swift */,
 				A1BA76B922345E5200806C32 /* CheckConfigCommand.swift */,
@@ -195,7 +192,6 @@
 				A1BA76B4223450E300806C32 /* MakeConfigCommand.swift in Sources */,
 				A1BA76932234448200806C32 /* main.swift in Sources */,
 				A1BA76AB22344B7500806C32 /* Body.swift in Sources */,
-				A1BA76B02234505A00806C32 /* HelpCommand.swift in Sources */,
 				A1BA76A52234492500806C32 /* TypeItem.swift in Sources */,
 				A1BA769D2234451D00806C32 /* Header.swift in Sources */,
 				A1BA76BA22345E5200806C32 /* CheckConfigCommand.swift in Sources */,

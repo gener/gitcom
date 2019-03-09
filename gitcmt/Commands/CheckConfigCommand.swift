@@ -19,14 +19,14 @@ Add argument for checking by path.
 	func perform(arguments: [String]) {
 		let path = arguments.first ?? Constants.config
 		guard FileManager.default.fileExists(atPath: path) else {
-			print("File \(path.color(.blue))\("".color(.default)) does not exists")
+			print("File \(path.color(.blue))\("".color(.default)) does not exist.")
 			return
 		}
 		do {
 			let data = try Data(contentsOf: URL(fileURLWithPath: path))
 			let decoder = JSONDecoder()
 			_ = try decoder.decode(CommitConfig.self, from: data)
-			print("Your configuration is Ok")
+			print("Your configuration is \("OK".color(.green))\("".color(.default)).")
 		}
 		catch {
 			print("\(error.localizedDescription)")
