@@ -40,7 +40,7 @@ Add argument to save config file by path.
 			print("\(path.color(.blue)) \("".color(.default))successfully generated.")
 		}
 		catch {
-			print("\(error.localizedDescription)")
+			print(error: error)
 		}
 	}
 }
