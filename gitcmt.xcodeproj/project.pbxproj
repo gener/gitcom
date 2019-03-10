@@ -23,6 +23,7 @@
 		A1BA76BE2235171100806C32 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76BD2235171100806C32 /* Helpers.swift */; };
 		A1BA76C02235607600806C32 /* IntegrateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76BF2235607600806C32 /* IntegrateCommand.swift */; };
 		A1BA76C32235614B00806C32 /* GitProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76C22235614B00806C32 /* GitProcess.swift */; };
+		A1BA76C522357BAF00806C32 /* ValidateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76C422357BAF00806C32 /* ValidateCommand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +56,7 @@
 		A1BA76BD2235171100806C32 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		A1BA76BF2235607600806C32 /* IntegrateCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrateCommand.swift; sourceTree = "<group>"; };
 		A1BA76C22235614B00806C32 /* GitProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitProcess.swift; sourceTree = "<group>"; };
+		A1BA76C422357BAF00806C32 /* ValidateCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateCommand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				A1BA76B922345E5200806C32 /* CheckConfigCommand.swift */,
 				A1BA76BB2235118800806C32 /* CommitCommand.swift */,
 				A1BA76BF2235607600806C32 /* IntegrateCommand.swift */,
+				A1BA76C422357BAF00806C32 /* ValidateCommand.swift */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				A1BA76BE2235171100806C32 /* Helpers.swift in Sources */,
 				A1BA76C32235614B00806C32 /* GitProcess.swift in Sources */,
 				A1BA76B62234535900806C32 /* Constants.swift in Sources */,
+				A1BA76C522357BAF00806C32 /* ValidateCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

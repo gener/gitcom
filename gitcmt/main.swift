@@ -45,12 +45,19 @@ run.commands.append(MakeConfigCommand())
 run.commands.append(CheckConfigCommand())
 run.commands.append(CommitCommand())
 run.commands.append(IntegrateCommand())
+run.commands.append(ValidateCommand())
 
 
 var arguments = CommandLine.arguments
 arguments.removeFirst()
 
-//arguments.append("check-config")
+arguments.append("validate")
+arguments.append("""
+build: (fix) laksjf ljfasf
+asl kfjlasfjas
+META: asflafa
+"""
+)
 
 run.perform(arguments: arguments)
 
