@@ -17,6 +17,7 @@ import Foundation
 //}
 
 
+
 class Run {
 	var commands: [CommandProtocol] = []
 	func perform(arguments: [String]) {
@@ -41,14 +42,23 @@ class Run {
 			print(str)
 		}
 	}
+	
+	func command<T>(class: T.Type) -> T? {
+		return commands.first(where: { command in
+			return command is T
+		}) as? T
+	}
 }
 
 let run = Run()
 run.commands.append(MakeConfigCommand())
 run.commands.append(CheckConfigCommand())
+run.commands.append(CommitCommand())
 
 var arguments = CommandLine.arguments
 arguments.removeFirst()
+
+//arguments.append("check-config")
 
 run.perform(arguments: arguments)
 

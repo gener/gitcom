@@ -9,7 +9,7 @@
 import Foundation
 
 class MakeConfigCommand: CommandProtocol {
-	var name: String = "make-config"
+	var name: String = "generate-config"
 	
 	var description: String = """
 Generate default config file.

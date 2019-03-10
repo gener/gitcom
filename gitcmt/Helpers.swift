@@ -20,6 +20,21 @@ func error(errorMessage: String) -> Error {
 	return NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])
 }
 
+func info(message: String) {
+	print("\(message.color(.cyan))\("".color(.default))")
+}
+
+func print(list: [ItemProtocol]) {
+	for (index, type) in list.enumerated() {
+		print(item: type, key: "\(index + 1)")
+	}
+}
+
+func print(item: ItemProtocol, key: String) {
+	print("\(key.color(.white))\("".color(.default)) \(item.key) - \(item.value)")
+
+}
+
 enum Result<S,E> {
 	case success(S)
 	case failure(E)

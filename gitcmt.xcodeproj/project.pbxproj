@@ -12,7 +12,6 @@
 		A1BA769D2234451D00806C32 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA769C2234451D00806C32 /* Header.swift */; };
 		A1BA76A12234456B00806C32 /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76A02234456B00806C32 /* Footer.swift */; };
 		A1BA76A52234492500806C32 /* TypeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76A42234492500806C32 /* TypeItem.swift */; };
-		A1BA76A72234493700806C32 /* ScopeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76A62234493700806C32 /* ScopeItem.swift */; };
 		A1BA76AB22344B7500806C32 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76AA22344B7500806C32 /* Body.swift */; };
 		A1BA76AD22344BB300806C32 /* CommitConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76AC22344BB300806C32 /* CommitConfig.swift */; };
 		A1BA76B22234507300806C32 /* BaseCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76B12234507300806C32 /* BaseCommand.swift */; };
@@ -20,6 +19,8 @@
 		A1BA76B62234535900806C32 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76B52234535900806C32 /* Constants.swift */; };
 		A1BA76B82234586200806C32 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76B72234586200806C32 /* Colors.swift */; };
 		A1BA76BA22345E5200806C32 /* CheckConfigCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76B922345E5200806C32 /* CheckConfigCommand.swift */; };
+		A1BA76BC2235118800806C32 /* CommitCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76BB2235118800806C32 /* CommitCommand.swift */; };
+		A1BA76BE2235171100806C32 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA76BD2235171100806C32 /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,7 +42,6 @@
 		A1BA769C2234451D00806C32 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		A1BA76A02234456B00806C32 /* Footer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
 		A1BA76A42234492500806C32 /* TypeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeItem.swift; sourceTree = "<group>"; };
-		A1BA76A62234493700806C32 /* ScopeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeItem.swift; sourceTree = "<group>"; };
 		A1BA76AA22344B7500806C32 /* Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		A1BA76AC22344BB300806C32 /* CommitConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitConfig.swift; sourceTree = "<group>"; };
 		A1BA76B12234507300806C32 /* BaseCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCommand.swift; sourceTree = "<group>"; };
@@ -49,6 +49,8 @@
 		A1BA76B52234535900806C32 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A1BA76B72234586200806C32 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		A1BA76B922345E5200806C32 /* CheckConfigCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckConfigCommand.swift; sourceTree = "<group>"; };
+		A1BA76BB2235118800806C32 /* CommitCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitCommand.swift; sourceTree = "<group>"; };
+		A1BA76BD2235171100806C32 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				A1BA76922234448200806C32 /* main.swift */,
 				A1BA76B52234535900806C32 /* Constants.swift */,
 				A1BA76B72234586200806C32 /* Colors.swift */,
+				A1BA76BD2235171100806C32 /* Helpers.swift */,
 			);
 			path = gitcmt;
 			sourceTree = "<group>";
@@ -103,7 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				A1BA769A223444B400806C32 /* Lenght.swift */,
-				A1BA76A62234493700806C32 /* ScopeItem.swift */,
 				A1BA76A42234492500806C32 /* TypeItem.swift */,
 			);
 			path = Common;
@@ -126,6 +128,7 @@
 				A1BA76B12234507300806C32 /* BaseCommand.swift */,
 				A1BA76B3223450E300806C32 /* MakeConfigCommand.swift */,
 				A1BA76B922345E5200806C32 /* CheckConfigCommand.swift */,
+				A1BA76BB2235118800806C32 /* CommitCommand.swift */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -197,8 +200,9 @@
 				A1BA76BA22345E5200806C32 /* CheckConfigCommand.swift in Sources */,
 				A1BA76B82234586200806C32 /* Colors.swift in Sources */,
 				A1BA769B223444B400806C32 /* Lenght.swift in Sources */,
-				A1BA76A72234493700806C32 /* ScopeItem.swift in Sources */,
+				A1BA76BC2235118800806C32 /* CommitCommand.swift in Sources */,
 				A1BA76A12234456B00806C32 /* Footer.swift in Sources */,
+				A1BA76BE2235171100806C32 /* Helpers.swift in Sources */,
 				A1BA76B62234535900806C32 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

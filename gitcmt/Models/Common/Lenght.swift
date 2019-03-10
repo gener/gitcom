@@ -10,8 +10,14 @@ import Foundation
 
 struct Lenght: Codable {
 	struct Val: Codable {
-		static let min: Val = Lenght.Val(message: "Lenght is so small!", value: 5)
-		static let max: Val = Lenght.Val(message: "Lenght is so big!", value: 72)
+		static func min(_ value: Int) -> Val {
+			return Lenght.Val(message: "Lenght is so small!", value: value)
+		}
+		static func max(_ value: Int) -> Val {
+			return Lenght.Val(message: "Lenght is so big!", value: value)
+		}
+		static let min: Val = Val.min(5)
+		static let max: Val = Val.max(72)
 		var message: String
 		var value: Int
 		

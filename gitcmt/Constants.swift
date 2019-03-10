@@ -10,4 +10,8 @@ import Foundation
 
 class Constants {
 	static let config = "config.json"
+	static let skipScopeIndex = "-"
+	static let skipScopeKey = "//skip"
+	static let customScopeKey = "custom"
+	static let customScopeIndex = "0"
 }

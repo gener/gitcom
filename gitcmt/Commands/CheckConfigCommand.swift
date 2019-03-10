@@ -18,7 +18,8 @@ Add argument for checking by path.
 	
 	func config(path: String = Constants.config) -> Result<CommitConfig, Error> {
 		guard FileManager.default.fileExists(atPath: path) else {
-			return Result.failure(error(errorMessage: "File \(path) does not exist."))
+			let name = run.command(class: MakeConfigCommand.self)?.name ?? ""
+			return Result.failure(error(errorMessage: "File \(path) does not exist. Please run `gitcmt \(name)`"))
 		}
 		do {
 			let data = try Data(contentsOf: URL(fileURLWithPath: path))
