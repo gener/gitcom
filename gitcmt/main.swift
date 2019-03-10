@@ -49,9 +49,6 @@ run.commands.append(CheckConfigCommand())
 
 var arguments = CommandLine.arguments
 arguments.removeFirst()
-//arguments.append("make-config")
-//arguments.append("test")
-
 
 run.perform(arguments: arguments)
 

@@ -29,7 +29,7 @@ Add argument for checking by path.
 			print("Your configuration is \("OK".color(.green))\("".color(.default)).")
 		}
 		catch {
-			print("\(error.localizedDescription)")
+			print("File \(path.color(.blue))\("".color(.default))\(error.localizedDescription)")
 		}
 	}
 }
