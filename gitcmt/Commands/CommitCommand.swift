@@ -37,6 +37,9 @@ Make beautiful commit.
 	}
 	
 	private func takeScope(header: Header, type: String) -> String {
+		guard header.scope.enabled else {
+			return ""
+		}
 		print(list: header.scope.items.filter({ (item) -> Bool in
 			return item.types == nil || item.types!.contains(type)
 		}))
