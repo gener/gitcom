@@ -15,20 +15,10 @@ class CommitCommand: CommandProtocol {
 Make beautiful commit.
 """
 	
-	private let gitURL = URL(fileURLWithPath: "/usr/bin/git")
-	
-	private var hasGit: Bool {
-		let res = gitBash(arguments: ["rev-parse", "--is-inside-work-tree"])
-		switch res {
-		case let .success(string):
-			return string == "true"
-		default:
-			return false
-		}
-	}
-	
+	private let git = GitProcess()
+
 	private var hasStage: Bool {
-		let res = gitBash(arguments: ["status", "-uno", "-s"])
+		let res = git.run(arguments: ["status", "-uno", "-s"])
 		switch res {
 		case let .success(string):
 			return string.count > 0
@@ -36,31 +26,7 @@ Make beautiful commit.
 			return false
 		}
 	}
-	
-	private func gitBash(arguments: [String]) -> Result<String, Error> {
-		let process = Process()
-		process.executableURL = gitURL
-		process.arguments = arguments
-		let outputPipe = Pipe()
-		let errorPipe = Pipe()
-		process.standardOutput = outputPipe
-		process.standardError = errorPipe
-		do {
-			try process.run()
-			let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-			let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-			let output = String(decoding: outputData, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
-			let errorMsg = String(decoding: errorData, as: UTF8.self)
-			if errorMsg.count > 0 {
-				return Result.failure(error(errorMessage: errorMsg))
-			}
-			return Result.success(output)
-		}
-		catch {
-			return Result.failure(error)
-		}
-	}
-	
+
 	private func takeType(header: Header) -> String {
 		print(list: header.type.items)
 		guard let input = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines), let index = Int(input), index <= header.type.items.count, index > 0 else {
@@ -214,7 +180,7 @@ Make beautiful commit.
 	}
 	
 	func perform(arguments: [String]) {
-		guard hasGit else {
+		guard git.exists else {
 			return
 		}
 		guard hasStage else {
@@ -237,7 +203,7 @@ Make beautiful commit.
 				message.append("\n\(footer)")
 			}
 			if confirmCommit(message: message) {
-				let res = gitBash(arguments: ["commit", "-m", message])
+				let res = git.run(arguments: ["commit", "-m", message])
 				switch res {
 				case let .success(string):
 					print("RESULT: \n\(string)")

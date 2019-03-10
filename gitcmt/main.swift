@@ -8,16 +8,6 @@
 
 import Foundation
 
-//enum Task: String, CaseIterable {
-//	case makeConfig = "make-config"
-//	case checkConfig = "check-config"
-//	case gitInit = "git-init"
-//	case help
-//	case commit
-//}
-
-
-
 class Run {
 	var commands: [CommandProtocol] = []
 	func perform(arguments: [String]) {
@@ -54,6 +44,8 @@ let run = Run()
 run.commands.append(MakeConfigCommand())
 run.commands.append(CheckConfigCommand())
 run.commands.append(CommitCommand())
+run.commands.append(IntegrateCommand())
+
 
 var arguments = CommandLine.arguments
 arguments.removeFirst()
