@@ -16,20 +16,28 @@ Check your config file.
 Add argument for checking by path.
 """
 	
-	func perform(arguments: [String]) {
-		let path = arguments.first ?? Constants.config
+	func config(path: String = Constants.config) -> Result<CommitConfig, Error> {
 		guard FileManager.default.fileExists(atPath: path) else {
-			print("File \(path.color(.blue))\("".color(.default)) does not exist.")
-			return
+			return Result.failure(error(errorMessage: "File \(path) does not exist."))
 		}
 		do {
 			let data = try Data(contentsOf: URL(fileURLWithPath: path))
 			let decoder = JSONDecoder()
-			_ = try decoder.decode(CommitConfig.self, from: data)
-			print("Your configuration is \("OK".color(.green))\("".color(.default)).")
+			let res = try decoder.decode(CommitConfig.self, from: data)
+			return Result.success(res)
 		}
 		catch {
-			print("File \(path.color(.blue))\("".color(.default))\(error.localizedDescription)")
+			return Result.failure(error)
+		}
+	}
+	
+	func perform(arguments: [String]) {
+		let path = arguments.first ?? Constants.config
+		switch self.config(path: path) {
+		case .success(_):
+			print("Your configuration is \("OK".color(.green))\("".color(.default)).")
+		case let .failure(error):
+			print(error: error)
 		}
 	}
 }
