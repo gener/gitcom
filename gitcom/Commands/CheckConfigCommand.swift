@@ -1,6 +1,6 @@
 //
 //  CheckConfigCommand.swift
-//  gitcmt
+//  gitcom
 //
 //  Created by Eugene Kalyada on 10/03/2019.
 //  Copyright © 2019 EDCODE. All rights reserved.
@@ -19,7 +19,7 @@ Add argument for checking by path.
 	func config(path: String = Constants.config) -> Result<CommitConfig, Error> {
 		guard FileManager.default.fileExists(atPath: path) else {
 			let name = run.command(class: MakeConfigCommand.self)?.name ?? ""
-			return Result.failure(error(errorMessage: "File \(path) does not exist. Please run `gitcmt \(name)`"))
+			return Result.failure(error(errorMessage: "File \(path) does not exist. Please run `gitcom \(name)`"))
 		}
 		do {
 			let data = try Data(contentsOf: URL(fileURLWithPath: path))
