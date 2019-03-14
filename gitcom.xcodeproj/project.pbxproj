@@ -39,7 +39,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A1BA768F2234448200806C32 /* gitcmt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gitcmt; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1BA768F2234448200806C32 /* gitcom */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gitcom; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1BA76922234448200806C32 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		A1BA769A223444B400806C32 /* Length.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Length.swift; sourceTree = "<group>"; };
 		A1BA769C2234451D00806C32 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 		A1BA76862234448200806C32 = {
 			isa = PBXGroup;
 			children = (
-				A1BA76912234448200806C32 /* gitcmt */,
+				A1BA76912234448200806C32 /* gitcom */,
 				A1BA76902234448200806C32 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,12 +81,12 @@
 		A1BA76902234448200806C32 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1BA768F2234448200806C32 /* gitcmt */,
+				A1BA768F2234448200806C32 /* gitcom */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A1BA76912234448200806C32 /* gitcmt */ = {
+		A1BA76912234448200806C32 /* gitcom */ = {
 			isa = PBXGroup;
 			children = (
 				A1BA76C12235613E00806C32 /* Util */,
@@ -97,7 +97,7 @@
 				A1BA76B72234586200806C32 /* Colors.swift */,
 				A1BA76BD2235171100806C32 /* Helpers.swift */,
 			);
-			path = gitcmt;
+			path = gitcom;
 			sourceTree = "<group>";
 		};
 		A1BA76992234449200806C32 /* Models */ = {
@@ -153,9 +153,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1BA768E2234448200806C32 /* gitcmt */ = {
+		A1BA768E2234448200806C32 /* gitcom */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1BA76962234448200806C32 /* Build configuration list for PBXNativeTarget "gitcmt" */;
+			buildConfigurationList = A1BA76962234448200806C32 /* Build configuration list for PBXNativeTarget "gitcom" */;
 			buildPhases = (
 				A1BA768B2234448200806C32 /* Sources */,
 				A1BA768C2234448200806C32 /* Frameworks */,
@@ -165,9 +165,9 @@
 			);
 			dependencies = (
 			);
-			name = gitcmt;
+			name = gitcom;
 			productName = gitcmt;
-			productReference = A1BA768F2234448200806C32 /* gitcmt */;
+			productReference = A1BA768F2234448200806C32 /* gitcom */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -185,7 +185,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1BA768A2234448200806C32 /* Build configuration list for PBXProject "gitcmt" */;
+			buildConfigurationList = A1BA768A2234448200806C32 /* Build configuration list for PBXProject "gitcom" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -197,7 +197,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1BA768E2234448200806C32 /* gitcmt */,
+				A1BA768E2234448200806C32 /* gitcom */,
 			);
 		};
 /* End PBXProject section */
@@ -368,7 +368,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1BA768A2234448200806C32 /* Build configuration list for PBXProject "gitcmt" */ = {
+		A1BA768A2234448200806C32 /* Build configuration list for PBXProject "gitcom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1BA76942234448200806C32 /* Debug */,
@@ -377,7 +377,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1BA76962234448200806C32 /* Build configuration list for PBXNativeTarget "gitcmt" */ = {
+		A1BA76962234448200806C32 /* Build configuration list for PBXNativeTarget "gitcom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1BA76972234448200806C32 /* Debug */,
