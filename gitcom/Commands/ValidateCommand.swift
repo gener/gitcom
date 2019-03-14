@@ -86,6 +86,7 @@ Add message as parameter.
 	
 	private func checkHeaderLength(header: Header, subject: String, scope: String) -> Bool {
 		guard let subjectString = subject.split(separator: ")")[safe: 1] else {
+			print(error: "Commit subject must not be empty.")
 			return false
 		}
 		if let min = header.length.min, min.value > subjectString.count {
@@ -116,11 +117,10 @@ Add message as parameter.
 	}
 	
 	private func validateBody(bodySettings: Body, body: String?/*, footerSettings: Footer*/) -> Bool {
-		guard let bodyString = body, !bodyString.isEmpty/*, !bodyString.contains(footerSettings.prefix)*/ else {
+		guard let bodyString = body, !bodyString.isEmpty else {
 			print(error: "Commit message must not be empty.")
 			return false
 		}
-		
 		if let min = bodySettings.length.min, min.value > bodyString.count {
 			print(error: min.message)
 			return false
@@ -134,13 +134,13 @@ Add message as parameter.
 	}
 	
 	private func validateFooter(footerSettings: Footer, footer: String?) -> Bool {
-		guard var footerString = footer else {
+		guard var footerString = footer, !footerString.isEmpty else {
 			if footerSettings.enabled {
 				print(error: "Footer is enabled but empty.")
 			}
 			return footerSettings.enabled ? false : true
 		}
-		
+
 		if !footerString.hasPrefix(footerSettings.prefix) {
 			print(error: "Footer has wrong prefix.")
 			return false
@@ -184,7 +184,6 @@ Add message as parameter.
 				footer += part
 			}
 		}
-
 		guard validateBody(bodySettings: config.body, body: body/*, footerSettings: config.footer*/),
 			  validateFooter(footerSettings: config.footer, footer: footer)
 		else {
@@ -194,13 +193,7 @@ Add message as parameter.
 		return true
 	}
 	
-	func perform(arguments: [String]) {
-//		let isSilent = arguments.contains("--silent")
-		let parts = arguments.count == 1 ? arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "|") : arguments.dropFirst().first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
-		guard let commitParts = parts, commitParts.count > 0 else {
-			print(error(errorMessage: "Commit message does not exist"))
-			exit(1)
-		}
+	private func processCommitParts(parts: [String.SubSequence]) {
 		guard let configCommand = run.command(class: CheckConfigCommand.self) else {
 			print(error: "Could not find command in charge of config validation")
 			return
@@ -208,14 +201,31 @@ Add message as parameter.
 		
 		switch configCommand.config() {
 		case let .success(config):
-			guard validate(config: config, parts: commitParts) else {
+			guard validate(config: config, parts: parts) else {
 				exit(1)
 			}
-			delegate?.validationSuccessful(message: commitParts.joined(separator: "\n"))
+			delegate?.validationSuccessful(message: parts.joined(separator: "\n"))
 		case let .failure(error):
 			print(error: error)
 			exit(1)
 		}
 	}
 	
+	func perform(arguments: [String]) {
+//		let isSilent = arguments.contains("--silent")
+		var parts = arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "|")
+		if let commitParts = parts, commitParts.count > 1 {
+			processCommitParts(parts: commitParts)
+		}
+		else {
+			parts = arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
+			if let commitParts = parts, commitParts.count > 1 {
+				processCommitParts(parts: commitParts)
+			}
+			else {
+				print(error(errorMessage: "Commit message does not exist"))
+				exit(1)
+			}
+		}
+	}
 }

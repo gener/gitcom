@@ -13,6 +13,9 @@ class CommitCommand: CommandProtocol {
 
 	var description: String = """
 Make beautiful commit.
+Add argument -m for inline message.
+'|' stand for new line symbol.
+Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 """
 	
 	private let git = GitProcess()
