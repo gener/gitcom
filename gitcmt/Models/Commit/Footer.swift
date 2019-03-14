@@ -10,7 +10,7 @@ import Foundation
 
 struct Footer: Codable {
 	var request: String = "Please enter a footer of commit"
-	var lenght: Lenght = Lenght(min: nil, max: nil)
+	var length: Length = Length(min: nil, max: nil)
 	var prefix: String = "META:"
 	var enabled: Bool = true
 }

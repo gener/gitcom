@@ -42,12 +42,12 @@ struct Header: Codable {
 		var enabled: Bool = true
 		var request: String = "Please, enter your custom scope (or enter `<` to return to list of scopes):"
 		var back: String = "<"
-		var lenght: Lenght = Lenght(min: Lenght.Val.min(2), max: Lenght.Val.max(5))
+		var length: Length = Length(min: Length.Val.min(2), max: Length.Val.max(5))
 	}
 	
 	var type: HType = HType()
 	var request: String = "Please enter a header of commit"
-	var lenght: Lenght = Lenght(min: Lenght.Val.min, max:  Lenght.Val.max)
+	var length: Length = Length(min: Length.Val.min, max:  Length.Val.max)
 	var scope: Scope = Scope()
 	var customScope = CustomScope()
 }

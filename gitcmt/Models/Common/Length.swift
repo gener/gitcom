@@ -1,5 +1,5 @@
 //
-//  Lenght.swift
+//  Length.swift
 //  gitcmt
 //
 //  Created by Eugene Kalyada on 10/03/2019.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct Lenght: Codable {
+struct Length: Codable {
 	struct Val: Codable {
 		static func min(_ value: Int) -> Val {
-			return Lenght.Val(message: "Lenght is so small!", value: value)
+			return Length.Val(message: "Length is so small!", value: value)
 		}
 		static func max(_ value: Int) -> Val {
-			return Lenght.Val(message: "Lenght is so big!", value: value)
+			return Length.Val(message: "Length is so big!", value: value)
 		}
 		static let min: Val = Val.min(5)
 		static let max: Val = Val.max(72)

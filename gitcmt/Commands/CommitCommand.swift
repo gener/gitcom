@@ -64,7 +64,7 @@ Make beautiful commit.
 		}
 			
 		if let index = Int(input), index > 0 {
-			let item = header.type.items[index - 1]
+			let item = header.scope.items[index - 1]
 			return item.key
 		}
 		else {
@@ -80,11 +80,11 @@ Make beautiful commit.
 		if input == header.customScope.back {
 			return take(header: header)
 		}
-		if let min = header.customScope.lenght.min, min.value > input.count {
+		if let min = header.customScope.length.min, min.value > input.count {
 			print(error: min.message)
 			return takeCustomScope(header: header)
 		}
-		if let max = header.customScope.lenght.max, max.value < input.count {
+		if let max = header.customScope.length.max, max.value < input.count {
 			print(error: max.message)
 			return takeCustomScope(header: header)
 		}
@@ -96,11 +96,11 @@ Make beautiful commit.
 		guard let input = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines) else {
 			return takeSubject(header: header)
 		}
-		if let min = header.lenght.min, min.value > input.count {
+		if let min = header.length.min, min.value > input.count {
 			print(error: min.message)
 			return takeSubject(header: header)
 		}
-		if let max = header.lenght.max, max.value < input.count {
+		if let max = header.length.max, max.value < input.count {
 			print(error: max.message)
 			return takeSubject(header: header)
 		}
@@ -134,11 +134,11 @@ Make beautiful commit.
 		guard let input = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines) else {
 			return take(body: body)
 		}
-		if let min = body.lenght.min, min.value > input.count {
+		if let min = body.length.min, min.value > input.count {
 			print(error: min.message)
 			return take(body: body)
 		}
-		if let max = body.lenght.max, max.value < input.count {
+		if let max = body.length.max, max.value < input.count {
 			print(error: max.message)
 			return take(body: body)
 		}
@@ -153,11 +153,11 @@ Make beautiful commit.
 		guard let input = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines) else {
 			return take(footer: footer)
 		}
-		if let min = footer.lenght.min, min.value > input.count {
+		if let min = footer.length.min, min.value > input.count {
 			print(error: min.message)
 			return take(footer: footer)
 		}
-		if let max = footer.lenght.max, max.value < input.count {
+		if let max = footer.length.max, max.value < input.count {
 			print(error: max.message)
 			return take(footer: footer)
 		}
@@ -182,6 +182,18 @@ Make beautiful commit.
 		return confirmCommit(message: message)
 	}
 	
+	private func makeCommit(message: String) {
+		if confirmCommit(message: message) {
+			let res = git.run(arguments: ["commit", "-m", message])
+			switch res {
+			case let .success(string):
+				print("RESULT: \n\(string)")
+			case let .failure(error):
+				print(error: error)
+			}
+		}
+	}
+	
 	func perform(arguments: [String]) {
 		guard git.exists else {
 			return
@@ -197,28 +209,31 @@ Make beautiful commit.
 		
 		switch configCommand.config() {
 		case let .success(config):
-			var message = ""
-			message += self.take(header: config.header)
-			if let body = self.take(body: config.body) {
-				message.append("\n\(body)")
+			if let firstArgument = arguments.first, firstArgument == Constants.messageArgument, let message = arguments[safe: 1] {
+				let validationCommand = ValidateCommand()
+				validationCommand.delegate = self
+				validationCommand.perform(arguments: [message])
 			}
-			if let footer = self.take(footer: config.footer) {
-				message.append("\n\(footer)")
-			}
-			if confirmCommit(message: message) {
-				let res = git.run(arguments: ["commit", "-m", message])
-				switch res {
-				case let .success(string):
-					print("RESULT: \n\(string)")
-				case let .failure(error):
-					print(error: error)
+			else {
+				var message = ""
+				message += self.take(header: config.header)
+				if let body = self.take(body: config.body) {
+					message.append("\n\(body)")
 				}
+				if let footer = self.take(footer: config.footer) {
+					message.append("\n\(footer)")
+				}
+				makeCommit(message: message)
 			}
-			
 		case let .failure(error):
 			print(error: error)
 			return
 		}
 	}
-	
+}
+
+extension CommitCommand: ValidationResultDelegate {
+	func validationSuccessful(message: String) {
+		makeCommit(message: message)
+	}
 }

@@ -35,6 +35,11 @@ extension String {
 	}
 }
 
+public extension Array {
+	public subscript (safe index: Int) -> Element? {
+		return indices ~= index ? self[index] : nil
+	}
+}
 
 func print(error: Error) {
 	print(error: error.localizedDescription)

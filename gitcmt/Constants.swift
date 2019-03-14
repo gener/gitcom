@@ -14,4 +14,5 @@ class Constants {
 	static let skipScopeKey = "//skip"
 	static let customScopeKey = "custom"
 	static let customScopeIndex = "0"
+	static let messageArgument = "-m"
 }

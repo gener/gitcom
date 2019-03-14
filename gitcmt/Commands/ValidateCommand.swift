@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol ValidationResultDelegate: class {
+	func validationSuccessful(message: String)
+}
+
 class ValidateCommand: CommandProtocol {
 	var name: String = "validate"
 	
@@ -16,6 +20,8 @@ Validate message for commit.
 Add message as parameter.
 """
 
+	public weak var delegate: ValidationResultDelegate?
+	
 	private func checkType(header: Header, subject: String) -> Result<String, String> {
 		//get type
 		guard let type = subject.split(separator: ":").first else {
@@ -31,7 +37,7 @@ Add message as parameter.
 	}
 	
 	private func checkScope(header: Header, subject: String, type: String) -> Result<String, String> {
-		let pattern = "(?:build:\\s)(?:\\(([^\\)]+)\\))"
+		let pattern = "(?:\(type):\\s)(?:\\(([^\\)]+)\\))"
 		let scope = subject.capturedGroups(withRegex: pattern).first
 		//scope disabled but exists
 		if scope != nil && !header.scope.enabled {
@@ -64,11 +70,11 @@ Add message as parameter.
 			return Result.failure("Scope `\(sScope)` is not avaliable for this type `\(type)`.")
 		}
 		if !isAvaliableScope && header.customScope.enabled {
-			if let min = header.customScope.lenght.min, min.value > sScope.count {
-				return Result.failure("Scope `\(sScope)` has small lenght.")
+			if let min = header.customScope.length.min, min.value > sScope.count {
+				return Result.failure("Scope `\(sScope)` has small length.")
 			}
-			if let max = header.customScope.lenght.max, max.value < sScope.count {
-				return Result.failure("Scope `\(sScope)` has big lenght.")
+			if let max = header.customScope.length.max, max.value < sScope.count {
+				return Result.failure("Scope `\(sScope)` has big length.")
 			}
 		}
 		else if !isAvaliableScope && !header.customScope.enabled {
@@ -78,17 +84,110 @@ Add message as parameter.
 		return Result.success(sScope)
 	}
 	
-	private func validate(header: Header, subject: String) -> Bool {
+	private func checkHeaderLength(header: Header, subject: String, scope: String) -> Bool {
+		guard let subjectString = subject.split(separator: ")")[safe: 1] else {
+			return false
+		}
+		if let min = header.length.min, min.value > subjectString.count {
+			print(error: min.message)
+			return false
+		}
+		if let max = header.length.max, max.value < subjectString.count {
+			print(error: max.message)
+			return false
+		}
+		return true
+	}
+	
+	private func validateHeader(header: Header, subject: String) -> Bool {
 		switch checkType(header: header, subject: subject) {
 		case let .success(type):
 			switch checkScope(header: header, subject: subject, type: type) {
-			case .success(_):
-				print("1")
+			case .success(let scope):
+				return checkHeaderLength(header: header, subject: subject, scope: scope)
 			case let .failure(message):
 				print(error: message)
 			}
 		case let .failure(message):
 			print(error: message)
+		}
+		
+		return false
+	}
+	
+	private func validateBody(bodySettings: Body, body: String?/*, footerSettings: Footer*/) -> Bool {
+		guard let bodyString = body, !bodyString.isEmpty/*, !bodyString.contains(footerSettings.prefix)*/ else {
+			print(error: "Commit message must not be empty.")
+			return false
+		}
+		
+		if let min = bodySettings.length.min, min.value > bodyString.count {
+			print(error: min.message)
+			return false
+		}
+		if let max = bodySettings.length.max, max.value < bodyString.count {
+			print(error: max.message)
+			return false
+
+		}
+		return true
+	}
+	
+	private func validateFooter(footerSettings: Footer, footer: String?) -> Bool {
+		guard var footerString = footer else {
+			if footerSettings.enabled {
+				print(error: "Footer is enabled but empty.")
+			}
+			return footerSettings.enabled ? false : true
+		}
+		
+		if !footerString.hasPrefix(footerSettings.prefix) {
+			print(error: "Footer has wrong prefix.")
+			return false
+		}
+		
+		footerString = String(footerString.dropFirst(footerSettings.prefix.count))
+		
+		if footerString.isEmpty && footerSettings.enabled {
+			print(error: "Footer is enabled but empty.")
+			return false
+		}
+		else if !footerString.isEmpty && !footerSettings.enabled {
+			print(error: "Footer is disabled but not empty.")
+			return false
+		}
+		
+		if let min = footerSettings.length.min, min.value > footerString.count {
+			print(error: min.message)
+			return false
+		}
+		else if let max = footerSettings.length.max, max.value < footerString.count {
+			print(error: max.message)
+			return false
+		}
+		
+		return true
+	}
+	
+	private func validate(config: CommitConfig, parts: [String.SubSequence]) -> Bool {
+		var commitParts = parts.map { String($0) }
+		guard validateHeader(header: config.header, subject: String(parts.first!)) else { return false }
+		commitParts.removeFirst()
+		var body: String = ""
+		var footer: String  = ""
+		commitParts.forEach { part in
+			if !part.hasPrefix(config.footer.prefix) {
+				body += part
+				body += "\n"
+			}
+			else {
+				footer += part
+			}
+		}
+
+		guard validateBody(bodySettings: config.body, body: body/*, footerSettings: config.footer*/),
+			  validateFooter(footerSettings: config.footer, footer: footer)
+		else {
 			return false
 		}
 		
@@ -97,11 +196,11 @@ Add message as parameter.
 	
 	func perform(arguments: [String]) {
 //		let isSilent = arguments.contains("--silent")
-		guard let parts = arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n"), parts.count > 0 else {
+		let parts = arguments.count == 1 ? arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "|") : arguments.dropFirst().first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
+		guard let commitParts = parts, commitParts.count > 0 else {
 			print(error(errorMessage: "Commit message does not exist"))
 			exit(1)
 		}
-		
 		guard let configCommand = run.command(class: CheckConfigCommand.self) else {
 			print(error: "Could not find command in charge of config validation")
 			return
@@ -109,7 +208,10 @@ Add message as parameter.
 		
 		switch configCommand.config() {
 		case let .success(config):
-			validate(header: config.header, subject: String(parts.first!))
+			guard validate(config: config, parts: commitParts) else {
+				exit(1)
+			}
+			delegate?.validationSuccessful(message: commitParts.joined(separator: "\n"))
 		case let .failure(error):
 			print(error: error)
 			exit(1)

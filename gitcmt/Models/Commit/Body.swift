@@ -10,7 +10,7 @@ import Foundation
 
 struct Body: Codable {
 	var request: String = "Please enter a body of commit"
-	var lenght: Lenght = Lenght(min: nil, max: nil)
+	var length: Length = Length(min: nil, max: nil)
 	var newLineSpacer: String = "|"
 }
 
