@@ -51,13 +51,5 @@ run.commands.append(ValidateCommand())
 var arguments = CommandLine.arguments
 arguments.removeFirst()
 
-arguments.append("validate")
-arguments.append("""
-build: (fix) laksjf ljfasf
-asl kfjlasfjas
-META: asflafa
-"""
-)
-
 run.perform(arguments: arguments)
 
