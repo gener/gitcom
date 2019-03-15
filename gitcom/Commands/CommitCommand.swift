@@ -199,6 +199,7 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 	
 	func perform(arguments: [String]) {
 		guard git.exists else {
+			print(error: "Git does not exist.")
 			return
 		}
 		guard hasStage else {
@@ -212,7 +213,7 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 		
 		switch configCommand.config() {
 		case let .success(config):
-			if let firstArgument = arguments.first, firstArgument == Constants.messageArgument, let message = arguments[safe: 1] {
+			if let firstArgument = arguments.first, firstArgument == Constants.messageArgument, arguments[safe: 1] == "-m", let message = arguments[safe: 2] {
 				let validationCommand = ValidateCommand()
 				validationCommand.delegate = self
 				validationCommand.perform(arguments: [message])
@@ -229,6 +230,7 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 				makeCommit(message: message)
 			}
 		case let .failure(error):
+			print(error: "Config file is invalid.")
 			print(error: error)
 			return
 		}
