@@ -184,7 +184,7 @@ Add message as parameter.
 				footer += part
 			}
 		}
-		guard validateBody(bodySettings: config.body, body: body/*, footerSettings: config.footer*/),
+		guard validateBody(bodySettings: config.body, body: body),
 			  validateFooter(footerSettings: config.footer, footer: footer)
 		else {
 			return false
@@ -216,13 +216,11 @@ Add message as parameter.
 		var parts = arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "|")
 		if let commitParts = parts, commitParts.count > 1 {
 			processCommitParts(parts: commitParts)
-			print("\("Commit message is valid".color(.green))\("".color(.default))")
 		}
 		else {
 			parts = arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
 			if let commitParts = parts, commitParts.count > 1 {
 				processCommitParts(parts: commitParts)
-				print("\("Commit message is valid".color(.green))\("".color(.default))")
 			}
 			else {
 				print(error(errorMessage: "Commit message does not exist"))

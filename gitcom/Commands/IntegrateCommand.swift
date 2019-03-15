@@ -19,10 +19,11 @@ Add command to your system for creating beautiful commit (`gitcom`)
 	var commitMessageHook: String = """
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 message=`cat $1`
-messageWithNewLines=${message//|/"\\n"}
+messageWithNewLine=${message//|/"\\n"}
+echo "$messageWithNewLine" > "$1"
 gitcom validate "$message"
 """
-	
+
 	private func copyExecutableToBinFolder() {
 		let executableURLinBin = URL(fileURLWithPath: "/usr/local/bin" + Constants.executableNamePath)
 		let currentDirPath = FileManager.default.currentDirectoryPath
@@ -58,7 +59,7 @@ gitcom validate "$message"
 	
 	private func appendValidationHook(sampleFilePath: String, hookFilePath: String) {
 		guard let data = commitMessageHook.data(using: .utf8, allowLossyConversion: false) else { return }
-		
+
 		if FileManager.default.fileExists(atPath: hookFilePath) {
 			if let fileHandle = FileHandle(forWritingAtPath: hookFilePath) {
 				fileHandle.seekToEndOfFile()
