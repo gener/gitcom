@@ -47,7 +47,6 @@ run.commands.append(CommitCommand())
 run.commands.append(IntegrateCommand())
 run.commands.append(ValidateCommand())
 
-
 var arguments = CommandLine.arguments
 arguments.removeFirst()
 

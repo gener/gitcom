@@ -15,4 +15,7 @@ class Constants {
 	static let customScopeKey = "custom"
 	static let customScopeIndex = "0"
 	static let messageArgument = "-m"
+	static let gitCommitMsgHookFileName = "commit-msg"
+	static let gitCommitMsgHookSampleFileName = "commit-msg.sample"
+	static let executableNamePath = "/gitcom"
 }
