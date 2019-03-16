@@ -70,7 +70,7 @@ Integrate utility to your system:
 		do {
 			if !FileManager.default.fileExists(atPath: hookFilePath) {
 				FileManager.default.createFile(atPath: hookFilePath,
-														 contents: hookFilePath.data(using: .utf8, allowLossyConversion: false),
+														 contents: Constants.commitMessageHookHeader.data(using: .utf8, allowLossyConversion: false),
 														 attributes: nil
 				)
 			}
