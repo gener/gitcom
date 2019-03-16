@@ -40,9 +40,10 @@ Make beautiful commit.
 		guard header.scope.enabled else {
 			return ""
 		}
-		print(list: header.scope.items.filter({ (item) -> Bool in
+		let scopes = header.scope.items.filter({ (item) -> Bool in
 			return item.types == nil || item.types!.contains(type)
-		}))
+		})
+		print(list: scopes)
 		if header.customScope.enabled {
 			print(item: ScopeItem(key: Constants.customScopeKey, value: header.customScope.request, types: nil), key: Constants.customScopeIndex)
 		}
@@ -64,7 +65,7 @@ Make beautiful commit.
 		}
 			
 		if let index = Int(input), index > 0 {
-			let item = header.scope.items[index - 1]
+			let item = scopes[index - 1]
 			return item.key
 		}
 		else {
