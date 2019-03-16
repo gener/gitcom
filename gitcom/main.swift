@@ -50,7 +50,4 @@ run.commands.append(ValidateCommand())
 var arguments = CommandLine.arguments
 arguments.removeFirst()
 
-//arguments.append(contentsOf: ["make"])
-
 run.perform(arguments: arguments)
-
