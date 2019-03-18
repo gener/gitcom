@@ -116,8 +116,13 @@ Add message as parameter.
 	
 	private func validateBody(bodySettings: Body, body: String?/*, footerSettings: Footer*/) -> Bool {
 		guard let bodyString = body, !bodyString.isEmpty else {
-			print(error: "Commit message must not be empty.")
-			return false
+			if let min = bodySettings.length.min, min.value > 0 {
+				print(error: "Commit message must not be empty.")
+				return false
+			}
+			else {
+				return true
+			}
 		}
 		if let min = bodySettings.length.min, min.value > bodyString.count {
 			print(error: min.insufficient(prefix: "Body"))
