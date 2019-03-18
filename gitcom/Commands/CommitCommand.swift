@@ -13,15 +13,12 @@ class CommitCommand: CommandProtocol {
 
 	var description: String = """
 Make beautiful commit.
-Add argument -m for inline message.
-'|' stand for new line symbol.
-Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 """
 	
 	private let git = GitProcess()
 
 	private var hasStage: Bool {
-		let res = git.run(arguments: ["status", "-uno", "-s"])
+		let res = git.run(arguments: ["diff", "--cached", "--name-only"])
 		switch res {
 		case let .success(string):
 			return string.count > 0
@@ -43,9 +40,10 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 		guard header.scope.enabled else {
 			return ""
 		}
-		print(list: header.scope.items.filter({ (item) -> Bool in
+		let scopes = header.scope.items.filter({ (item) -> Bool in
 			return item.types == nil || item.types!.contains(type)
-		}))
+		})
+		print(list: scopes)
 		if header.customScope.enabled {
 			print(item: ScopeItem(key: Constants.customScopeKey, value: header.customScope.request, types: nil), key: Constants.customScopeIndex)
 		}
@@ -67,7 +65,7 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 		}
 			
 		if let index = Int(input), index > 0 {
-			let item = header.scope.items[index - 1]
+			let item = scopes[index - 1]
 			return item.key
 		}
 		else {
@@ -83,12 +81,12 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 		if input == header.customScope.back {
 			return take(header: header)
 		}
-		if let min = header.customScope.length.min, min.value > input.count {
-			print(error: min.message)
+		if let min = header.customScope.length?.min, min.value > input.count {
+			print(error: min.insufficient(prefix: "Scope"))
 			return takeCustomScope(header: header)
 		}
-		if let max = header.customScope.length.max, max.value < input.count {
-			print(error: max.message)
+		if let max = header.customScope.length?.max, max.value < input.count {
+			print(error: max.excess(prefix: "Scope"))
 			return takeCustomScope(header: header)
 		}
 		return input
@@ -100,11 +98,11 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 			return takeSubject(header: header)
 		}
 		if let min = header.length.min, min.value > input.count {
-			print(error: min.message)
+			print(error: min.insufficient(prefix: "Subject"))
 			return takeSubject(header: header)
 		}
 		if let max = header.length.max, max.value < input.count {
-			print(error: max.message)
+			print(error: max.excess(prefix: "Subject"))
 			return takeSubject(header: header)
 		}
 		return input
@@ -138,11 +136,11 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 			return take(body: body)
 		}
 		if let min = body.length.min, min.value > input.count {
-			print(error: min.message)
+			print(error: min.insufficient(prefix: "Body"))
 			return take(body: body)
 		}
 		if let max = body.length.max, max.value < input.count {
-			print(error: max.message)
+			print(error: max.excess(prefix: "Body"))
 			return take(body: body)
 		}
 		return input.replacingOccurrences(of: body.newLineSpacer, with: "\n")
@@ -157,11 +155,11 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 			return take(footer: footer)
 		}
 		if let min = footer.length.min, min.value > input.count {
-			print(error: min.message)
+			print(error: min.insufficient(prefix: "Footer"))
 			return take(footer: footer)
 		}
 		if let max = footer.length.max, max.value < input.count {
-			print(error: max.message)
+			print(error: max.excess(prefix: "Footer"))
 			return take(footer: footer)
 		}
 		return input.count > 0 ? "\(footer.prefix) \(input)" : nil
@@ -199,6 +197,7 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 	
 	func perform(arguments: [String]) {
 		guard git.exists else {
+			print(error: "Git does not exist.")
 			return
 		}
 		guard hasStage else {
@@ -212,23 +211,17 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 		
 		switch configCommand.config() {
 		case let .success(config):
-			if let firstArgument = arguments.first, firstArgument == Constants.messageArgument, let message = arguments[safe: 1] {
-				let validationCommand = ValidateCommand()
-				validationCommand.delegate = self
-				validationCommand.perform(arguments: [message])
+			var message = ""
+			message += self.take(header: config.header)
+			if let body = self.take(body: config.body) {
+				message.append("\n\(body)")
 			}
-			else {
-				var message = ""
-				message += self.take(header: config.header)
-				if let body = self.take(body: config.body) {
-					message.append("\n\(body)")
-				}
-				if let footer = self.take(footer: config.footer) {
-					message.append("\n\(footer)")
-				}
-				makeCommit(message: message)
+			if let footer = self.take(footer: config.footer) {
+				message.append("\n\(footer)")
 			}
+			makeCommit(message: message)
 		case let .failure(error):
+			print(error: "Config file is invalid.")
 			print(error: error)
 		}
 	}

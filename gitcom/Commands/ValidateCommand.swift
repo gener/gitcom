@@ -23,15 +23,16 @@ Add message as parameter.
 	public weak var delegate: ValidationResultDelegate?
 	
 	private func checkType(header: Header, subject: String) -> Result<String, String> {
+		
 		//get type
-		guard let type = subject.split(separator: ":").first else {
-			return Result.failure("Could not find type in subject commit.")
+		guard subject.contains(":"), let type = subject.split(separator: ":").first else {
+			return Result.failure("Could not find type of commit in message `\(subject)`.")
 		}
 		//check type
 		guard let _ = header.type.items.first(where: { row in
 			return row.key == type
 		}) else {
-			return Result.failure("Type \(type) is unavaliable.")
+			return Result.failure("Type `\(type)` is unavaliable type of commit.")
 		}
 		return Result.success(String(type))
 	}
@@ -41,7 +42,7 @@ Add message as parameter.
 		let scope = subject.capturedGroups(withRegex: pattern).first
 		//scope disabled but exists
 		if scope != nil && !header.scope.enabled {
-			return Result.failure("Scope is not avaliable for using.")
+			return Result.failure("Sope is not avaliable, but found: `\(scope!)`")
 		}
 		//scope enabled
 		guard header.scope.enabled else {
@@ -50,7 +51,7 @@ Add message as parameter.
 
 		//scope empty but not allowed to skip
 		if scope == nil && !header.scope.skip {
-			return Result.failure("Scope does not exist.")
+			return Result.failure("Could not find scope of commit in message `\(subject)`)")
 		}
 		//allowed to skip and empty
 		if scope == nil && header.scope.skip {
@@ -70,10 +71,10 @@ Add message as parameter.
 			return Result.failure("Scope `\(sScope)` is not avaliable for this type `\(type)`.")
 		}
 		if !isAvaliableScope && header.customScope.enabled {
-			if let min = header.customScope.length.min, min.value > sScope.count {
+			if let min = header.customScope.length?.min, min.value > sScope.count {
 				return Result.failure("Scope `\(sScope)` has small length.")
 			}
-			if let max = header.customScope.length.max, max.value < sScope.count {
+			if let max = header.customScope.length?.max, max.value < sScope.count {
 				return Result.failure("Scope `\(sScope)` has big length.")
 			}
 		}
@@ -84,17 +85,14 @@ Add message as parameter.
 		return Result.success(sScope)
 	}
 	
-	private func checkHeaderLength(header: Header, subject: String, scope: String) -> Bool {
-		guard let subjectString = subject.split(separator: ")")[safe: 1] else {
-			print(error: "Commit subject must not be empty.")
-			return false
-		}
+	private func checkHeaderLength(header: Header, subject: String, type: String, scope: String) -> Bool {
+		let subjectString = subject.stringByReplacingFirstOccurrenceOfString(target: "\(type): (\(scope))", withString: "")
 		if let min = header.length.min, min.value > subjectString.count {
-			print(error: min.message)
+			print(error: min.insufficient(prefix: "Subject"))
 			return false
 		}
 		if let max = header.length.max, max.value < subjectString.count {
-			print(error: max.message)
+			print(error: max.excess(prefix: "Subject"))
 			return false
 		}
 		return true
@@ -105,7 +103,7 @@ Add message as parameter.
 		case let .success(type):
 			switch checkScope(header: header, subject: subject, type: type) {
 			case .success(let scope):
-				return checkHeaderLength(header: header, subject: subject, scope: scope)
+				return checkHeaderLength(header: header, subject: subject, type: type, scope: scope)
 			case let .failure(message):
 				print(error: message)
 			}
@@ -122,11 +120,11 @@ Add message as parameter.
 			return false
 		}
 		if let min = bodySettings.length.min, min.value > bodyString.count {
-			print(error: min.message)
+			print(error: min.insufficient(prefix: "Body"))
 			return false
 		}
 		if let max = bodySettings.length.max, max.value < bodyString.count {
-			print(error: max.message)
+			print(error: max.excess(prefix: "Body"))
 			return false
 
 		}
@@ -135,14 +133,22 @@ Add message as parameter.
 	
 	private func validateFooter(footerSettings: Footer, footer: String?) -> Bool {
 		guard var footerString = footer, !footerString.isEmpty else {
-			if footerSettings.enabled {
+			if let min = footerSettings.length.min, min.value > 0 {
 				print(error: "Footer is enabled but empty.")
+				return false
 			}
-			return footerSettings.enabled ? false : true
+			else {
+				return true
+			}
+		}
+		
+		if !footerSettings.enabled {
+			print(error: "Footer is not allowed, but has `\(footerString)`.")
+			return false
 		}
 
 		if !footerString.hasPrefix(footerSettings.prefix) {
-			print(error: "Footer has wrong prefix.")
+			print(error: "Footer has no has prefix `\(footerSettings.prefix)`.")
 			return false
 		}
 		
@@ -158,11 +164,11 @@ Add message as parameter.
 		}
 		
 		if let min = footerSettings.length.min, min.value > footerString.count {
-			print(error: min.message)
+			print(error: min.insufficient(prefix: "Footer"))
 			return false
 		}
 		else if let max = footerSettings.length.max, max.value < footerString.count {
-			print(error: max.message)
+			print(error: max.excess(prefix: "Footer"))
 			return false
 		}
 		
@@ -212,20 +218,12 @@ Add message as parameter.
 	}
 	
 	func perform(arguments: [String]) {
-//		let isSilent = arguments.contains("--silent")
-		var parts = arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "|")
-		if let commitParts = parts, commitParts.count > 1 {
-			processCommitParts(parts: commitParts)
+		guard var message = arguments.first else {
+			print(error: "Commit message does not exist")
+			exit(1)
 		}
-		else {
-			parts = arguments.first?.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
-			if let commitParts = parts, commitParts.count > 1 {
-				processCommitParts(parts: commitParts)
-			}
-			else {
-				print(error(errorMessage: "Commit message does not exist"))
-				exit(1)
-			}
-		}
+		message = message.replacingOccurrences(of: "|", with: "\n")
+		let parts = message.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
+		processCommitParts(parts: parts)
 	}
 }

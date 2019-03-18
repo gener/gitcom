@@ -16,6 +16,25 @@ class Constants {
 	static let customScopeIndex = "0"
 	static let messageArgument = "-m"
 	static let gitCommitMsgHookFileName = "commit-msg"
-	static let gitCommitMsgHookSampleFileName = "commit-msg.sample"
 	static let executableNamePath = "/gitcom"
+	static let gitCommandNamePath = "/git-cm"
+	static let binPath = "/usr/local/bin"
+	static let gitHookPath = "/.git/hooks/"
+	static let gitCommandContent = """
+#!/bin/sh
+gitcom make
+"""
+	
+	static let commitMessageHookHeader = """
+#!/bin/sh
+"""
+	
+	static let commitMessageHook = """
+
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+message=`cat $1`
+messageWithNewLine=${message//|/"\\n"}
+echo "$messageWithNewLine" > "$1"
+gitcom validate "$message"
+"""
 }

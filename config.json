@@ -1,0 +1,95 @@
+{
+  "body" : {
+    "request" : "Please enter a body of commit:",
+    "newLineSpacer" : "|",
+    "length" : {
+      "min" : {
+          "value" : 5
+        },
+        "max" : {
+          "value" : 140
+        }
+    }
+  },
+  "footer" : {
+    "length" : {
+
+    },
+    "prefix" : "META:",
+    "enabled" : true,
+    "request" : "Please enter a footer of commit:"
+  },
+  "header" : {
+    "scope" : {
+      "skiptRequest" : "Do not add scope.",
+      "enabled" : true,
+      "items" : [
+        {
+          "key" : "validation",
+          "value" : "Part of code in core ypu application"
+        },
+        {
+          "key" : "commit",
+          "value" : "Modification of making commit"
+        },
+        {
+          "key" : "tests",
+          "value" : "Creation or modification tests"
+        },
+        {
+          "key" : "string",
+          "value" : "String resources update"
+        },
+        {
+          "key" : "config",
+          "value" : "Configuration modification"
+        },
+      ],
+      "skip" : false,
+      "request" : "Please, choose you scope of code:"
+    },
+    "length" : {
+      "min" : {
+        "value" : 5
+      },
+      "max" : {
+        "value" : 72
+      }
+    },
+    "customScope" : {
+      "enabled" : false,
+      "request" : "Please, enter your custom scope (or enter `<` to return to list of scopes):",
+      "back" : "<"
+    },
+    "type" : {
+      "request" : "Please, choose you type of commit:",
+      "items" : [
+        {
+          "key" : "build",
+          "value" : "Modifications related by configuration or building rules of project"
+        },
+        {
+          "key" : "ci",
+          "value" : "Changes for continuous integration"
+        },
+        {
+          "key" : "doc",
+          "value" : "Some documentation changes"
+        },
+        {
+          "key" : "feat",
+          "value" : "Making some feature"
+        },
+        {
+          "key" : "fix",
+          "value" : "Bugfixing"
+        },
+        {
+          "key" : "perf",
+          "value" : "Perfomance improvement"
+        }
+      ]
+    },
+    "request" : "Please enter a header of commit"
+  }
+}

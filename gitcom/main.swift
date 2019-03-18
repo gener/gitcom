@@ -51,4 +51,3 @@ var arguments = CommandLine.arguments
 arguments.removeFirst()
 
 run.perform(arguments: arguments)
-

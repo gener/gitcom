@@ -42,7 +42,7 @@ struct Header: Codable {
 		var enabled: Bool = true
 		var request: String = "Please, enter your custom scope (or enter `<` to return to list of scopes):"
 		var back: String = "<"
-		var length: Length = Length(min: Length.Val.min(2), max: Length.Val.max(5))
+		var length: Length? = Length(min: Length.Val.min(2), max: Length.Val.max(5))
 	}
 	
 	var type: HType = HType()
