@@ -198,7 +198,7 @@ Configuration file structure:
   Use **gitcom check-config** command to validate your configuration file. 
   
   ### Make commit 
-  Use **gitcom make** / **git cm** / **git-cm** command to make commit with formatted messgae.
+  Use **gitcom make** / **git cm** / **git-cm** command to make commit with formatted message.
   
   ### Validate commit 
 Run **gitcom validate** command with commit message as argument for its validation.
