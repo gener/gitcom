@@ -133,7 +133,7 @@ Add message as parameter.
 	
 	private func validateFooter(footerSettings: Footer, footer: String?) -> Bool {
 		guard var footerString = footer, !footerString.isEmpty else {
-			if let min = footerSettings.length.min, min.value > 0 {
+			if let min = footerSettings.length.min, min.value > 0, footerSettings.enabled {
 				print(error: "Footer is enabled but empty.")
 				return false
 			}
