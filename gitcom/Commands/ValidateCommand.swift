@@ -199,7 +199,18 @@ Add message as parameter.
 		return true
 	}
 	
-	private func processCommitParts(parts: [String.SubSequence]) {
+	private func processCommitParts(config: CommitConfig, parts: [String.SubSequence]) {
+		guard validate(config: config, parts: parts) else {
+			exit(1)
+		}
+		delegate?.validationSuccessful(message: parts.joined(separator: "\n"))
+	}
+	
+	func perform(arguments: [String]) {
+		guard var message = arguments.first else {
+			print(error: "Commit message does not exist")
+			exit(1)
+		}
 		guard let configCommand = run.command(class: CheckConfigCommand.self) else {
 			print(error: "Could not find command in charge of config validation")
 			return
@@ -207,6 +218,9 @@ Add message as parameter.
 		
 		switch configCommand.config() {
 		case let .success(config):
+			message = message.replacingOccurrences(of: config.body.newLineSpacer, with: "\n")
+			let parts = message.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
+			processCommitParts(config: config, parts: parts)
 			guard validate(config: config, parts: parts) else {
 				exit(1)
 			}
@@ -215,15 +229,5 @@ Add message as parameter.
 			print(error: error)
 			exit(1)
 		}
-	}
-	
-	func perform(arguments: [String]) {
-		guard var message = arguments.first else {
-			print(error: "Commit message does not exist")
-			exit(1)
-		}
-		message = message.replacingOccurrences(of: "|", with: "\n")
-		let parts = message.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
-		processCommitParts(parts: parts)
 	}
 }
