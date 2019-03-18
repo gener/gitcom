@@ -230,7 +230,6 @@ Example: gitcom make -m "Type: (Scope) Subject|Body|FooterPrefix: Footer"
 			}
 		case let .failure(error):
 			print(error: error)
-			return
 		}
 	}
 }
