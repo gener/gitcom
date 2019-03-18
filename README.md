@@ -4,9 +4,11 @@ Utility for making beautiful commit and check commit message format
 
 ## Getting Started
 
-1. Download the project, open it in Xcode and build. 
-2. In Project navigator (left panel), open Products directory. 
-3. Right-click on gitcom executable -> Show in Finder. Copy executable gitcom file into your project directory.
+1. Download the project, open it in Xcode. 
+2. Change the Team Signing section in project file. 
+3. Build and archive project. 
+4. Open the directory with executable file. 
+5. Run `./gitcom integrate git` to install app in your system (copy gitcom executable file into usr/loclal/bin directory. Allows to use **gitcom**, **git cm** and **git-cm** commands ).
 
 ## Usage
 
@@ -27,7 +29,7 @@ To create default configuration file, run **gitcom generate-config**.
 
 <details><summary><b>Default configuration file</b></summary>
 
-```
+```json
 {
   "body" : {
     "request" : "Please enter a body of commit",
@@ -202,5 +204,5 @@ Configuration file structure:
   
   ### Validate commit 
 Run **gitcom validate** command with commit message as argument for its validation.
-<br>Example: gitcom validate "build: (fix) subject|body|META:footer"
+<br>Example: `gitcom validate "build: (fix) subject|body|META:footer"`
   
