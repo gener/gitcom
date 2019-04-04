@@ -48,7 +48,7 @@ Make beautiful commit.
 			print(item: ScopeItem(key: Constants.customScopeKey, value: header.customScope.request, types: nil), key: Constants.customScopeIndex)
 		}
 		if header.scope.skip {
-			print(item: ScopeItem(key: Constants.skipScopeKey, value: header.scope.skiptRequest, types: nil), key: Constants.customScopeIndex)
+			print(item: ScopeItem(key: Constants.skipScopeKey, value: header.scope.skiptRequest, types: nil), key: Constants.skipScopeIndex)
 		}
 		guard let input = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines) else {
 			return takeScope(header: header, type: type)
